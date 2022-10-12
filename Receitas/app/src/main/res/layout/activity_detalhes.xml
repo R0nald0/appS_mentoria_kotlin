@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/carne1" />
 
     <TextView
-        android:id="@+id/id_txv_tituloReceitaDetalhes"
+        android:id="@+id/TxvTituloReceitaDetalhes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -39,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_txv_tituloReceitaDetalhes"
+        app:layout_constraintTop_toBottomOf="@+id/TxvTituloReceitaDetalhes"
         app:srcCompat="@drawable/ic_receita" />
 
     <TextView
@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <TextView
-        android:id="@+id/id_txv_tempoReceitaDetalhes"
+        android:id="@+id/TxvTempoReceitaDetalhes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"

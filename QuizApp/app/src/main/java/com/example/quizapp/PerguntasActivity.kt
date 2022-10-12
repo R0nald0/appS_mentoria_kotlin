@@ -3,8 +3,11 @@ package com.example.quizapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.widget.*
+import com.example.quizapp.databinding.ActivityMainBinding
+import com.example.quizapp.databinding.ActivityPerguntasBinding
 import kotlin.math.log
 
 class PerguntasActivity : AppCompatActivity() {
@@ -21,45 +24,49 @@ class PerguntasActivity : AppCompatActivity() {
     private  var indicePergunta = 0
     private  var totalAcertos = 0
 
+    private lateinit var binding: ActivityPerguntasBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_perguntas)
+        binding = ActivityPerguntasBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         getViews()
     }
 
     fun recuperarDados(){
         val bundle = intent.extras
-        val nome =bundle?.getString("nome")?:"Usuario"
+        val usuario =bundle?.getParcelable<Usuario>("usuario")
 
-        exibirCampos(nome)
-        mostrarPergunta()
+        if (usuario != null) {
+            exibirCampos(usuario)
+            mostrarPergunta()
+            btnConfirmarResposta.setOnClickListener {
 
-        btnConfirmarResposta.setOnClickListener {
+                if (validarResposta()){
+                    val tamnhoLista = listaPergunta.size
 
-           if (validarResposta()){
-               val tamnhoLista = listaPergunta.size
-               recuperaRespostaSelecionada()
+                    recuperaRespostaSelecionada(usuario)
 
-               indicePergunta++
-               if (indicePergunta < tamnhoLista){
-                   mostrarPergunta()
-                   txvNumeroPergunta.text ="${indicePergunta + 1}  de  ${tamnhoLista} Perguntas "
+                    indicePergunta++
+                    if (indicePergunta < tamnhoLista){
+                        mostrarPergunta()
+                        txvNumeroPergunta.text ="${indicePergunta + 1}  de  ${tamnhoLista} Perguntas "
 
-               }else{
-                    var intent = Intent(this,ResultadoActivity::class.java)
-                    intent.putExtra("acertos",totalAcertos)
-                     startActivity(intent)
-               }
+                    }else{
+                        val intent = Intent(this,ResultadoActivity::class.java)
+                        intent.putExtra("usuario",usuario)
+                        startActivity(intent)
+                        finish()
+                    }
 
-           }else{
-               Toast.makeText(this,"Escolha uma Opção",Toast.LENGTH_LONG).show()
-           }
-
+                }else{
+                    Toast.makeText(this,"Escolha uma Opção",Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
-    fun recuperaRespostaSelecionada(){
+    fun recuperaRespostaSelecionada(usuario: Usuario){
          val  indiceResposta= when{
              radioButton1.isChecked -> 1
              radioButton2.isChecked -> 2
@@ -67,59 +74,48 @@ class PerguntasActivity : AppCompatActivity() {
             else -> -1
          }
 
-        val  pergunta = listaPergunta [indicePergunta]
+        val pergunta = listaPergunta [indicePergunta]
 
         if (indiceResposta == pergunta.resposta){
             Toast.makeText(this,"Acertou",Toast.LENGTH_LONG).show()
             totalAcertos += 1
+            usuario.qtdAcertos =totalAcertos
+            exibirCampos(usuario)
         }else{
             Toast.makeText(this,"Errou",Toast.LENGTH_LONG).show()
         }
     }
-
-
     fun validarResposta(): Boolean{
         return (radioButton1.isChecked || radioButton2.isChecked || radioButton3.isChecked )
-
-
     }
 
     private fun mostrarPergunta() {
        listaPergunta = DadosPerguntas.recuperarListaPerguntas()
-        Log.i("listaperguntas", listaPergunta.toString())
 
-        /*
-        for(pergunta in listaPergunta){
-            Log.i("listaperguntas" , pergunta.titulo)
-            Log.i("listaperguntas" , pergunta.titulo)
-        }
-         */
-
-        val pergunta01 = listaPergunta[indicePergunta]
-        txvPerguntas.text = pergunta01.titulo
-        radioButton1.text = pergunta01.respostas01
-        radioButton2.text = pergunta01.respostas02
-        radioButton3.text = pergunta01.respostas03
+        val pergunta = listaPergunta[indicePergunta]
+        txvPerguntas.text = pergunta.titulo
+        radioButton1.text = pergunta.respostas01
+        radioButton2.text = pergunta.respostas02
+        radioButton3.text = pergunta.respostas03
 
         radioGroup.clearCheck();
-
-
     }
 
-    fun exibirCampos(nome:String){
-         txvNome.text = "ola,${nome}";
+    fun exibirCampos(usuario: Usuario){
+         txvNome.text = "ola,${usuario.nome} Acertos : ${usuario.qtdAcertos}";
     }
 
     fun getViews(){
-        txvNome = findViewById(R.id.idTxvNomeUser)
-        txvNumeroPergunta = findViewById(R.id.idTxvNumeroPerguntas)
-        txvPerguntas = findViewById(R.id.idPerguntas)
-        radioGroup = findViewById(R.id.idRadioGroup)
-        radioButton1 = findViewById(R.id.idRadioBtn1)
-        radioButton2 = findViewById(R.id.idRadioBtn2)
-        radioButton3 = findViewById(R.id.idRadioBtn3)
-        btnConfirmarResposta = findViewById(R.id.idBtnConfirmarResp)
-
+        with(binding){
+            txvNome = idTxvNomeUser
+            txvNumeroPergunta = idTxvNumeroPerguntas
+            txvPerguntas = idPerguntas
+            radioGroup =idRadioGroup
+            radioButton1 = idRadioBtn1
+            radioButton2 = idRadioBtn2
+            radioButton3 = idRadioBtn3
+            btnConfirmarResposta = idBtnConfirmarResp
+        }
         recuperarDados()
     }
 }

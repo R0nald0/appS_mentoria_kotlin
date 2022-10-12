@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
+import com.example.receitas.databinding.RcvItemLayoutBinding
 
 class ReceitaAdapter() :RecyclerView.Adapter<ReceitaAdapter.ReceitasViewHolder>(){
 
@@ -62,39 +63,34 @@ class ReceitaAdapter() :RecyclerView.Adapter<ReceitaAdapter.ReceitasViewHolder>(
              ),
      )
 
+     inner class  ReceitasViewHolder(item:RcvItemLayoutBinding) : RecyclerView.ViewHolder(item.root){
 
-     inner class  ReceitasViewHolder(item:View) : RecyclerView.ViewHolder(item){
-            var tituloReceita : TextView
-            var imgReceita :ImageView
-            var tempoReceita :TextView
+           private lateinit var itembinding: RcvItemLayoutBinding
 
-            init {
-                tituloReceita = item.findViewById(R.id.id_Txv_Titulo_Receita)
-                imgReceita = item.findViewById(R.id.id_imvReceirta)
-                tempoReceita =item.findViewById(R.id.id_Txv_tempo_Receita)
-            }
-
-
+           init {
+               itembinding = item
+           }
             fun bind(receita: Receita){
-                 tituloReceita.text = receita.titulo.uppercase()
-                tempoReceita.text =receita.tempo
-                imgReceita.setImageDrawable(
-                    ContextCompat.getDrawable(itemView.context,receita.Imagem)
-                )
-                itemView.setOnClickListener {
+                  itembinding.idTxvTituloReceita.text = receita.titulo.uppercase()
+                  itembinding.idTxvTempoReceita.text =receita.tempo
+                itembinding.idImvReceirta.setImageDrawable(
+                   ContextCompat.getDrawable(itemView.context,receita.Imagem)
+               )
 
-                    val intent = Intent(it.context,DetalhesActivity::class.java )
-                     var  extras  =intent.putExtra("receita",receita)
-                     ContextCompat.startActivity(it.context,intent,null)
-                   // Toast.makeText(it.context, receita.titulo,Toast.LENGTH_LONG).show()
-                }
+               itemView.setOnClickListener {
+                   val intent = Intent(it.context,DetalhesActivity::class.java )
+                    var  extras = intent.putExtra("receita",receita)
+                    ContextCompat.startActivity(it.context,intent,null)
+               }
             }
 
      }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceitasViewHolder {
-      val viewLayout = LayoutInflater.from(parent.context).inflate(R.layout.rcv_item_layout,parent,false)
-        return ReceitasViewHolder(viewLayout)
+    //  val viewLayout = LayoutInflater.from(parent.context).inflate(R.layout.rcv_item_layout,parent,false)
+        val binding = RcvItemLayoutBinding
+            .inflate(LayoutInflater.from(parent.context),parent,false)
+        return ReceitasViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ReceitasViewHolder, position: Int) {

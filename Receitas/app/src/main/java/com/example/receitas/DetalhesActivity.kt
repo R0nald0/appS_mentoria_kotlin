@@ -4,48 +4,69 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.receitas.databinding.ActivityDetalhesBinding
 
 class DetalhesActivity : AppCompatActivity() {
 
-    private lateinit var txvTituloDetalhes :TextView
-    private lateinit var  imgDetalhes : ImageView
-    private lateinit var  txvTempoDetalhe :TextView
-    private lateinit var  txvReceitaLis :TextView
-    private lateinit var  btnVoltar :Button
+
+    private lateinit var binding: ActivityDetalhesBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detalhes)
+        binding = ActivityDetalhesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        txvTituloDetalhes =findViewById(R.id.id_txv_tituloReceitaDetalhes)
+       /* txvTituloDetalhes =findViewById(R.id.id_txv_tituloReceitaDetalhes)
         txvTempoDetalhe =findViewById(R.id.id_txv_tempoReceitaDetalhes)
         txvReceitaLis =findViewById(R.id.id_txv_ingredientesReceitaDetalhes)
         imgDetalhes = findViewById(R.id.id_imgReceitaDetalhes)
         btnVoltar =findViewById(R.id.id_BtnVoltarDetalhes)
+*/
 
 
-        btnVoltar.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+
+            val  extras = intent.extras
+            val receita  = extras?.getParcelable<Receita>("receita")
+
+            if (receita != null) {
+                  binding.idImgReceitaDetalhes.setImageResource(receita.Imagem)
+                  binding.TxvTempoReceitaDetalhes.text = receita.tempo
+                  binding.TxvTituloReceitaDetalhes.text = receita.titulo.uppercase()
+                var ingrediente =""
+                receita.ingredientes.map {
+                    ingrediente += "- $it \n"
+                    binding.idTxvIngredientesReceitaDetalhes.text = ingrediente
+                }
+            }
+
+            binding.idBtnVoltarDetalhes.setOnClickListener {
+                finish()
+            }
+
+
+
+
+
+
+
+      /*  if(receita !=null){
+            Toast.makeText(this, receita.titulo, Toast.LENGTH_SHORT).show()
+            imgDetalhes.setImageDrawable(getDrawable(receita.Imagem))
+            txvTituloDetalhes.text= receita.titulo.uppercase()
+            txvTempoDetalhe.text = receita.tempo
+            var ingrediente =""
+            receita.ingredientes.map {
+                ingrediente += "- $it \n"
+                txvReceitaLis.text = ingrediente
+            }
         }
-
-
-        val  extras = intent.extras
-         val receita  = extras?.getParcelable<Receita>("receita")!!
-
-        Toast.makeText(this, receita.titulo, Toast.LENGTH_SHORT).show()
-        imgDetalhes.setImageDrawable(getDrawable(receita.Imagem))
-        txvTituloDetalhes.text= receita.titulo.uppercase()
-        txvTempoDetalhe.text = receita.tempo
-        var ingrediente =""
-        receita.ingredientes.map {
-             ingrediente += "- $it \n"
-            txvReceitaLis.text = ingrediente
-        }
-
+*/
 
 
 
