@@ -54,13 +54,13 @@ class DetalhesActivity : AppCompatActivity() {
     }
 
     fun carragarDados(){
-          val extras = intent.extras
-          val  peso = extras?.getDouble("peso")
-          val  altura = extras?.getDouble("altura")
+          val extra = intent.extras
+          val  peso = extra?.getDouble("peso")
+          val  altura = extra?.getDouble("altura")
 
           //txvInfPeso.text =  " Peso Informada: $peso "
          // txvInfAltura.text = "Altura Informada: $altura"
-         var usuario = extras?.getSerializable("usuario") as Usuario
+         var usuario = extra?.getSerializable("usuario") as Usuario
 
          txvNomeUser.text = usuario.nome
          txvInfPeso.text =  " Peso Informada: ${usuario.peso} "

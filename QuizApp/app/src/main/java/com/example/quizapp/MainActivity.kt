@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             finish()
             return true
         }
-       Toast.makeText(this,"Preencha seu nome",Toast.LENGTH_LONG).show()
+       Toast.makeText(this,"Preencha seu nome....",Toast.LENGTH_LONG).show()
         return false
     }
 

@@ -31,8 +31,8 @@ class DetalhesActivity : AppCompatActivity() {
 
 
 
-            val  extras = intent.extras
-            val receita  = extras?.getParcelable<Receita>("receita")
+            val  extra = intent.extras
+            val receita  = extra?.getParcelable<Receita>("receita")
 
             if (receita != null) {
                   binding.idImgReceitaDetalhes.setImageResource(receita.Imagem)
