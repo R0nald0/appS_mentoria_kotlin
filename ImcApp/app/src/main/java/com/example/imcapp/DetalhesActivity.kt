@@ -54,7 +54,7 @@ class DetalhesActivity : AppCompatActivity() {
     }
 
     fun carragarDados(){
-          val extras = intent.extras
+          val extra = intent.extras
           val  peso = extras?.getDouble("peso")
           val  altura = extras?.getDouble("altura")
 
