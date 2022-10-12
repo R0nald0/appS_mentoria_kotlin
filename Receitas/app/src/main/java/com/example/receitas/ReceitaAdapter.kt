@@ -33,7 +33,7 @@ class ReceitaAdapter() :RecyclerView.Adapter<ReceitaAdapter.ReceitasViewHolder>(
                      "1 xícara (chá) de leite",
                      "2 ovos",
                      "4 colheres (sopa) de óleo",
-                     "sal a gosto",
+                     "sal á gosto",
                      "300 g de carne moída",
                      "2 colheres (sopa) de cebola picada ou ralada",
                  )
